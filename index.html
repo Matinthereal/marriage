@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Love, Will You Marry Me?</title>
+    <!-- Tailwind CSS CDN for beautiful, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for the body to ensure full viewport coverage and centering */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Heartwarming gradient background - even softer and more diffused */
+            background: linear-gradient(to top right, #ffe4e1, #ffc0cb, #f8b195); /* Misty Rose to Pink to Peach */
+            min-height: 100vh; /* Ensure it covers the full height of the viewport */
+            display: flex;
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+            padding: 0.25rem; /* Minimal padding around the edge of the screen */
+            overflow: hidden; /* Prevent any scrollbars */
+            position: relative; /* Needed for absolute positioning of elements */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Styles for the main content container - refined aesthetic */
+        .proposal-container {
+            background-color: rgba(255, 255, 255, 0.98); /* Less transparent white for better pop */
+            backdrop-filter: blur(12px); /* Slightly stronger blur for frosted effect */
+            border-radius: 1.5rem; /* Even more rounded corners for a softer look */
+            padding: 1.5rem; /* Slightly increased internal padding for content breathing room */
+            max-width: 95%; /* Allow it to fill most of the screen width on small devices */
+            width: 550px; /* Max width for slightly smaller overall container on larger screens */
+            text-align: center;
+            /* More pronounced, yet soft, subtle shadow for a floating effect */
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 5px 10px -5px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 1; /* Ensures container is above background */
+            animation: fadeInScale 1s ease-out forwards; /* Fade-in animation for the container */
+            display: flex; /* Use flexbox for internal content layout */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centered content vertically */
+            /* Crucial for fitting content without scrolling on mobile */
+            min-height: calc(100vh - 0.5rem); /* Ensures it takes up most of the viewport height */
+            max-height: calc(100vh - 0.5rem); /* Prevents it from exceeding the viewport height */
+            box-sizing: border-box; /* Include padding in height calculation */
+        }
+
+        /* Animation for the main container to fade in beautifully */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive font sizing and aesthetic enhancements for general messages */
+        .text-message {
+            font-size: clamp(0.7rem, 2.7vw, 1.1rem); /* Optimized clamp range */
+            line-height: 1.3;
+            margin-bottom: 0.35rem; /* Fine-tuned margin */
+            color: #5a5a5a; /* Slightly darker grey for enhanced elegance */
+            text-shadow: 0.5px 0.5px 1.5px rgba(0,0,0,0.08); /* More refined text shadow */
+        }
+        .text-message.bold-style {
+            font-weight: 600; /* Semi-bold for specific emphasis */
+            color: #7b2cbf; /* Richer purple for emphasis */
+            text-shadow: 0.5px 0.5px 1.5px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive font sizing and aesthetic enhancements for the core question */
+        .text-question {
+            font-size: clamp(1.4rem, 5.5vw, 2.2rem); /* Optimized clamp range */
+            line-height: 1.1;
+            margin-top: 0.6rem;
+            margin-bottom: 0.9rem; /* Slightly more space below question */
+            color: #cc0000; /* Deeper, more intense red */
+            font-weight: 700; /* Bold */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* More pronounced text shadow */
+            animation: pulse 1.5s infinite ease-in-out; /* Smoother pulse animation */
+        }
+
+        /* Responsive font sizing and aesthetic enhancements for the celebration message */
+        .text-celebration {
+             font-size: clamp(0.85rem, 3.5vw, 1.5rem);
+             line-height: 1.2;
+             margin-top: 0.8rem; /* Slightly more space above */
+             color: #8e24aa; /* Vibrant purple */
+             font-weight: 700;
+             text-shadow: 0.5px 0.5px 1.5px rgba(0,0,0,0.1);
+        }
+
+        /* Styling for the engagement ring emoji - larger and more impactful */
+        #ringEmoji {
+            font-size: clamp(4rem, 18vw, 7rem); /* Scales dynamically, starts larger */
+            margin-top: 1rem;
+            margin-bottom: 0.6rem;
+            filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3)); /* Stronger shadow for the emoji */
+        }
+
+        /* Animation for the engagement ring emoji when it appears */
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        .ring-emoji.visible {
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Bouncier animation */
+        }
+
+        /* Button base styles - refined gradients, shadows, and **rounder corners** */
+        .button-style {
+            padding: 0.6rem 1.6rem; /* Slightly larger padding for better touch target */
+            font-size: 0.9rem; /* Adjusted font size */
+            white-space: nowrap;
+            border-radius: 9999px; /* **Makes buttons perfectly round** */
+            /* Enhanced, deeper shadow for a more premium look */
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2), 0 3px 6px -2px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out; /* Smoother transition for all properties */
+            cursor: pointer;
+        }
+        .button-style:hover {
+            transform: translateY(-2px) scale(1.05); /* Lifts and scales slightly on hover */
+            box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.25), 0 4px 8px -2px rgba(0, 0, 0, 0.12); /* Stronger shadow on hover */
+        }
+        .button-style:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(173, 216, 230, 0.7); /* Lighter blue focus ring */
+        }
+
+        /* Specific styles for Yes button - vibrant green gradient */
+        #yesButton {
+            @apply button-style text-white font-bold;
+            background: linear-gradient(to right, #4CAF50, #2E8B57); /* Stronger green */
+            border: 2px solid #228B22; /* Darker green border */
+        }
+        #yesButton:hover {
+            background: linear-gradient(to right, #388E3C, #1B5E20); /* Even darker green on hover */
+        }
+
+        /* Specific styles for No button - vibrant red gradient */
+        #noButton {
+            @apply button-style text-white font-bold;
+            background: linear-gradient(to right, #F44336, #D32F2F); /* Stronger red */
+            border: 2px solid #B71C1C; /* Darker red border */
+            position: relative; /* Default: relative for flex layout initially */
+            left: auto; top: auto; transform: none; /* Initial state reset */
+            transition: none; /* No transition initially in CSS, JS handles it on first click */
+            z-index: 20; /* Ensure it's always on top */
+        }
+
+        /* Wrapper for buttons to manage their layout */
+        .buttons-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column; /* Stacked on small screens */
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem; /* Increased space between buttons when stacked */
+            min-height: 80px; /* Slightly increased min-height for more breathing room for buttons */
+            margin-top: 0.6rem; /* Reduced top margin */
+            margin-bottom: 0.6rem; /* Reduced bottom margin */
+        }
+
+        /* Responsive adjustments for button layout on larger screens */
+        @media (min-width: 640px) { /* Tailwind's 'sm' breakpoint */
+            .buttons-wrapper {
+                flex-direction: row; /* Side-by-side on larger screens */
+                justify-content: center;
+                gap: 1.2rem; /* Increased space between yes and no when horizontal */
+                min-height: auto; /* No min-height needed when horizontal */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="proposal-container">
+        <!-- Heartwarming Message Section -->
+        <p class="text-message font-extrabold">
+            My dearest love,
+        </p>
+        <p class="text-message px-2">
+            From the moment I met you, my world lit up. Every day with you is a gift, an adventure, and a dream come true. You fill my life with so much joy, laughter, and endless love.
+        </p>
+        <p class="text-message bold-style px-2">
+            You are my best friend, my soulmate, and my everything.
+        </p>
+        <p class="text-message bold-style px-2">
+            I can't imagine a future without you by my side.
+        </p>
+        <p class="text-question animate-pulse">
+            Will you marry me?
+        </p>
+
+        <!-- Buttons Container -->
+        <div class="buttons-wrapper">
+            <!-- Yes Button -->
+            <button id="yesButton">
+                Yes! Absolutely!
+            </button>
+
+            <!-- No Button (positioned by JS on first click) -->
+            <button id="noButton">
+                No
+            </button>
+        </div>
+
+        <!-- Engagement Ring Emoji (Hidden initially) -->
+        <div id="ringEmoji" class="hidden ring-emoji">
+            💍
+        </div>
+
+        <!-- Celebratory Message (Hidden initially) -->
+        <p id="celebrationMessage" class="text-celebration hidden px-2">
+            Oh my goodness, I love you so much! You've made me the happiest person in the world! ❤️🎉
+        </p>
+    </div>
+
+    <script>
+        const noButton = document.getElementById('noButton');
+        const yesButton = document.getElementById('yesButton');
+        const ringEmoji = document.getElementById('ringEmoji');
+        const celebrationMessage = document.getElementById('celebrationMessage');
+        const proposalContainer = document.querySelector('.proposal-container'); // Get the main container
+
+        // Flag to track if the 'No' button has already started floating
+        let isNoButtonFloating = false;
+
+        /**
+         * Calculates the boundaries of the "invisible box" where the 'No' button can move.
+         * This box is centered and a percentage of the *viewport* dimensions.
+         * @returns {Object} An object with top, left, right, bottom, width, height properties of the movement box.
+         */
+        function getMovementBoxBoundaries() {
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Define the size of the "invisible box" as a percentage of the viewport
+            const boxPercentageWidth = 0.7; // 70% of viewport width
+            const boxPercentageHeight = 0.7; // 70% of viewport height
+
+            const boxWidth = viewportWidth * boxPercentageWidth;
+            const boxHeight = viewportHeight * boxPercentageHeight;
+
+            // Calculate the top-left coordinates to center the box
+            const boxLeft = (viewportWidth - boxWidth) / 2;
+            const boxTop = (viewportHeight - boxHeight) / 2;
+
+            return {
+                left: boxLeft,
+                top: boxTop,
+                right: boxLeft + boxWidth,
+                bottom: boxTop + boxHeight,
+                width: boxWidth,
+                height: boxHeight
+            };
+        }
+
+
+        /**
+         * Calculates and applies a new random position for the 'No' button within the *defined invisible box*.
+         * Ensures the button smoothly moves and stays entirely within this central area.
+         */
+        function moveNoButtonAway(event) {
+            // Prevent default button behavior (e.g., preventing scrolling on mobile touch)
+            if (event) {
+                 event.preventDefault();
+                 event.stopPropagation(); // Stop event from bubbling up
+            }
+
+            // On the very first interaction, switch the button to absolute positioning
+            // relative to the viewport and enable smooth transitions.
+            if (!isNoButtonFloating) {
+                // Get the button's current visual position relative to the viewport
+                const rect = noButton.getBoundingClientRect();
+
+                // Set its position to absolute, using its current visual coordinates
+                noButton.style.position = 'absolute';
+                noButton.style.left = `${rect.left}px`;
+                noButton.style.top = `${rect.top}px`;
+                noButton.style.transform = 'translate(0, 0)'; // Clear any initial transforms from CSS
+                // Enable smooth transition for subsequent moves
+                noButton.style.transition = 'left 0.3s ease-out, top 0.3s ease-out';
+                isNoButtonFloating = true; // Mark as floating
+            }
+
+            // Get the boundaries of the defined "invisible box"
+            const movementBox = getMovementBoxBoundaries();
+
+            // Get button dimensions
+            const buttonWidth = noButton.offsetWidth;
+            const buttonHeight = noButton.offsetHeight;
+
+            // Get current position of the button (absolute, relative to viewport)
+            const currentX = noButton.getBoundingClientRect().left;
+            const currentY = noButton.getBoundingClientRect().top;
+
+            // Define the actual movement limits within the box, considering button size
+            const minX_move = movementBox.left;
+            const maxX_move = movementBox.right - buttonWidth;
+            const minY_move = movementBox.top;
+            const maxY_move = movementBox.bottom - buttonHeight;
+
+            let newX, newY;
+
+            // Define minimum distance for a "significant" move (e.g., 20% of box width/height)
+            const minMoveDistanceX = movementBox.width * 0.20;
+            const minMoveDistanceY = movementBox.height * 0.20;
+
+            // Loop to ensure the new X position is far enough from the current X
+            // And ensure newX is within [minX_move, maxX_move]
+            do {
+                newX = minX_move + Math.random() * (maxX_move - minX_move);
+            } while (Math.abs(newX - currentX) < minMoveDistanceX);
+
+            // Loop to ensure the new Y position is far enough from the current Y
+            // And ensure newY is within [minY_move, maxY_move]
+            do {
+                newY = minY_move + Math.random() * (maxY_move - minY_move);
+            } while (Math.abs(newY - currentY) < minMoveDistanceY);
+
+            // Ensure coordinates are not negative and don't exceed max boundaries (safety check)
+            newX = Math.max(minX_move, Math.min(maxX_move, newX));
+            newY = Math.max(minY_move, Math.min(maxY_move, newY));
+
+            // Apply the new position
+            noButton.style.left = `${newX}px`;
+            noButton.style.top = `${newY}px`;
+        }
+
+        // Attach event listeners for the 'No' button
+        noButton.addEventListener('click', moveNoButtonAway);
+        noButton.addEventListener('touchstart', moveNoButtonAway); // For mobile touch events
+
+        // Event listener for the 'Yes' button
+        yesButton.addEventListener('click', () => {
+            // Hide the 'No' button permanently once 'Yes' is clicked
+            noButton.style.display = 'none';
+            // Show the engagement ring emoji
+            ringEmoji.classList.remove('hidden');
+            ringEmoji.classList.add('visible'); // Trigger the pop-in animation
+            // Show the celebratory message
+            celebrationMessage.classList.remove('hidden');
+
+            // Disable the 'Yes' button after it's clicked to prevent multiple clicks
+            yesButton.disabled = true;
+            yesButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+            console.log("YES! She said YES! Congratulations!");
+        });
+
+        // Function to initialize the layout and manage 'No' button's initial state
+        function initializeLayoutAndButtonState() {
+            // If the button is not yet floating, ensure it's in its correct initial relative position.
+            // This is crucial for it to appear next to the Yes button initially.
+            if (!isNoButtonFloating) {
+                noButton.style.position = 'relative';
+                noButton.style.left = 'auto';
+                noButton.style.top = 'auto';
+                noButton.style.transform = 'none';
+                noButton.style.transition = 'none'; // No transition when in static state
+            } else {
+                // If the button is already floating (e.g., after a resize),
+                // reposition it to ensure it stays within the new *invisible box* dimensions.
+                moveNoButtonAway(null); // Pass null as event since it's not a user interaction
+            }
+        }
+
+        // Call the initialization function when the window loads
+        window.onload = initializeLayoutAndButtonState;
+        // Also call it when the window is resized to keep the floating button within its box
+        window.addEventListener('resize', initializeLayoutAndButtonState);
+    </script>
+</body>
+</html>
